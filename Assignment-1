@@ -1,0 +1,9 @@
+### ASSIGNMENT - 1 #### (23/12/2025)
+
+Need to Set-up the Build Environment for Java Maven Applications :::
+	
+		1. Create a Linux Script to Set-up the Build Environment for Java Maven Applications
+		
+		2. Create Linux User with ssh keys to perform Application Builds 
+		
+		3. Perform regular clean-up of the workspace dir 
