@@ -7,4 +7,122 @@ Need to Set-up the Build Environment for Java Maven Applications :::
 		2. Create Linux User with ssh keys to perform Application Builds 
 		
 		3. Perform regular clean-up of the workspace dir 
-I will complete the given assignment tomorrow before the class
+
+
+Error faced: [sudo] password for sourceuser: sourceuser is not in the sudoers file.
+
+Solution:
+exit from sourceuser by giving command "Exit"
+go to root user give access to sourceuser by giving command "usermod -aG sudo sourceuser"
+then log back to source user and execute the shell script.
+
+Answer:
+
+1. Create a Linux Script to Set-up the Build Environment for Java Maven Applications.
+vi shell-script
+
+
+#!/bin/bash
+
+echo 'Set-up the Build Environment for Java Maven Applications.'
+
+sudo apt update -y
+
+sudo apt install $1 -y
+sudo apt install $2 -y
+
+echo 'Application installed successfully'
+
+:wq
+
+
+chmod 755 shell-script.sh
+
+./shell-script.sh jdk17 maven
+
+
+2. Create Linux User with ssh keys to perform Application Builds .
+
+useradd sourceuser -s /bin/bash -m -d /home/sourceuser
+
+passwd sourceuser
+
+su - sourceuser
+
+ll-a
+
+mkdir .ssh
+
+ssh-keygen -t ecdsa -b 521
+
+cat id_ecdsa.pub > authorized_keys
+
+chmod 600 authorized_keys 
+
+
+3. Perform regular clean-up of the workspace dir 
+
+
+#!/bin/bash
+
+echo 'Perform regular clean-up of the workspace dir'
+
+WORKSPACE=/home/sourceuser/shell-scripting
+
+find $WORKSPACE -type f -mtime +7 -delete
+find $WORKSPACE -type d -empty -delete
+
+
+
+find	           ###Search for files/directories
+$WORKSPACE	       ###Start searching from this directory
+-type f	           ###Only regular files (not directories)
+-mtime +7	       ###Modified more than 7 days ago
+-delete	           ###Delete the matched files
+
+
+
+
+
+-type d	      ###Only directories
+-empty	      ###Directory has no files/subdirectories
+-delete	      ###Remove the directory
+
+
+
+CHATGPT Script::::
+
+
+#!/bin/bash
+
+# Exit if not run as root
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run this script as root or using sudo"
+  exit 1
+fi
+
+# Check arguments
+if [ $# -ne 2 ]; then
+  echo "Usage: $0 <java-package> <maven-package>"
+  exit 1
+fi
+
+JAVA_PKG=$1
+MAVEN_PKG=$2
+
+echo "Updating system..."
+apt update -y
+
+echo "Installing Java and Maven..."
+apt install -y $JAVA_PKG $MAVEN_PKG
+
+echo "Verifying installations..."
+java -version
+mvn -version
+
+echo "Build environment setup completed successfully."
+
+
+
+
+
